@@ -1,3 +1,5 @@
+> 🚧 **Status: in progress.** Lab build underway; fixtures will be replaced with captured lab telemetry and write-ups added as each technique is validated.
+
 # AD Purple Team Lab
 
 ![detections](https://github.com/kushalmistry/AD-purple-team-lab/actions/workflows/detections.yml/badge.svg)
