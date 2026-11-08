@@ -1,0 +1,26 @@
+title: Kerberos TGT Issued Without Pre-Authentication
+id: 1dfdf0bb-d7fc-4f07-a359-ca8f2f9fff84
+status: experimental
+description: |
+  Detects a successful TGT request (4768) where Kerberos pre-authentication was not
+  used (PreAuthType 0). Accounts with "Do not require Kerberos preauthentication" set
+  expose an AS-REP that can be cracked offline (AS-REP roasting).
+references:
+  - https://attack.mitre.org/techniques/T1558/004/
+author: Kushal Mistry
+date: 2026-11-07
+tags:
+  - attack.credential-access
+  - attack.t1558.004
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4768
+    PreAuthType: 0
+    Status: '0x0'
+  condition: selection
+falsepositives:
+  - Legacy accounts or devices that genuinely require pre-auth to be disabled (fix the account instead)
+level: medium

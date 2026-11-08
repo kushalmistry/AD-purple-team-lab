@@ -1,0 +1,1 @@
+{"Channel": "Security", "EventID": 4769, "Computer": "DC01.lab.local", "TargetUserName": "jsmith@LAB.LOCAL", "ServiceName": "svc_sql", "TicketEncryptionType": "0x17", "Status": "0x0", "IpAddress": "::ffff:10.10.10.50"}

@@ -1,0 +1,4 @@
+{"Channel": "System", "EventID": 7045, "Computer": "WS01.lab.local", "ServiceName": "VendorAgent", "ImagePath": "\"C:\\Program Files\\Vendor\\agent.exe\"", "ServiceType": "user mode service", "StartType": "auto start", "AccountName": "LocalSystem"}
+{"Channel": "System", "EventID": 7045, "Computer": "WS01.lab.local", "ServiceName": "Sysmon64", "ImagePath": "C:\\Windows\\Sysmon64.exe", "ServiceType": "user mode service", "StartType": "auto start", "AccountName": "LocalSystem"}
+{"Channel": "System", "EventID": 7045, "Computer": "WS01.lab.local", "ServiceName": "SomeSvc", "ImagePath": "%SystemRoot%\\System32\\svchost.exe -k netsvcs", "ServiceType": "share process", "StartType": "auto start", "AccountName": "LocalSystem"}
+{"Channel": "Security", "EventID": 7045, "Computer": "WS01.lab.local", "ServiceName": "RtQw", "ImagePath": "%systemroot%\\kXpQzRtM.exe"}

@@ -1,0 +1,35 @@
+title: Directory Replication Rights Used By Non-Domain-Controller Account
+id: 7f5bbdaf-d75d-41c1-b82f-fda96d1ed0c3
+status: experimental
+description: |
+  Detects use of the directory replication extended rights (DS-Replication-Get-Changes,
+  DS-Replication-Get-Changes-All, DS-Replication-Get-Changes-In-Filtered-Set) by an
+  account that is not a domain controller machine account. Legitimate replication is
+  performed by DCs; a user account doing this is a strong DCSync indicator.
+  Requires "Audit Directory Service Access" plus a SACL on the domain root (see lab/logging-setup.md).
+references:
+  - https://attack.mitre.org/techniques/T1003/006/
+author: Kushal Mistry
+date: 2026-11-07
+tags:
+  - attack.credential-access
+  - attack.t1003.006
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4662
+    AccessMask: '0x100'
+    Properties|contains:
+      - '1131f6aa-9c07-11d1-f79f-00c04fc2dcd2'
+      - '1131f6ad-9c07-11d1-f79f-00c04fc2dcd2'
+      - '89e95b76-444d-4c62-991a-0facbeda640c'
+  filter_domain_controllers:
+    SubjectUserName|endswith: '$'
+  filter_entra_connect:
+    SubjectUserName|startswith: 'MSOL_'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Directory sync tooling (e.g. Entra Connect) running under a dedicated account; add it to a filter
+level: high

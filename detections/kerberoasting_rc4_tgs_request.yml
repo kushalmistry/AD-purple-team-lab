@@ -1,0 +1,32 @@
+title: Kerberos Service Ticket Requested With RC4 Encryption
+id: c9d8c828-ad08-4cee-a994-b143db5cab2e
+status: experimental
+description: |
+  Detects Kerberos service ticket (TGS) requests for user-backed service accounts
+  that use RC4-HMAC (0x17). Kerberoasting tooling commonly requests RC4 tickets because
+  they are faster to crack offline. In a domain where AES is the default, RC4 requests
+  for user SPNs should be rare and are worth reviewing.
+references:
+  - https://attack.mitre.org/techniques/T1558/003/
+author: Kushal Mistry
+date: 2026-11-07
+tags:
+  - attack.credential-access
+  - attack.t1558.003
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4769
+    TicketEncryptionType: '0x17'
+    Status: '0x0'
+  filter_machine_accounts:
+    ServiceName|endswith: '$'
+  filter_krbtgt:
+    ServiceName: 'krbtgt'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Legacy applications or service accounts explicitly configured for RC4
+  - Older clients that do not support AES
+level: medium

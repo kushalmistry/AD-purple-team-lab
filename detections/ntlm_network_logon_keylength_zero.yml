@@ -1,0 +1,38 @@
+title: NTLM Network Logon With Null Session Key
+id: 9f90d845-0b00-4c3f-bce3-6483a57362df
+status: experimental
+description: |
+  Detects a successful network logon (type 3) authenticated with NTLM where no session
+  key was negotiated (KeyLength 0) and the subject is the NULL SID. This pattern is
+  commonly produced when an NTLM hash is used directly or an NTLM authentication is
+  relayed, instead of an interactive user typing a password. Baseline your environment
+  first; some legacy clients produce the same shape.
+references:
+  - https://attack.mitre.org/techniques/T1550/002/
+  - https://attack.mitre.org/techniques/T1557/001/
+author: Kushal Mistry
+date: 2026-11-07
+tags:
+  - attack.lateral-movement
+  - attack.t1550.002
+  - attack.credential-access
+  - attack.t1557.001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4624
+    LogonType: 3
+    AuthenticationPackageName: 'NTLM'
+    LogonProcessName|startswith: 'NtLmSsp'
+    KeyLength: 0
+    SubjectUserSid: 'S-1-0-0'
+  filter_anonymous:
+    TargetUserName: 'ANONYMOUS LOGON'
+  filter_machine_accounts:
+    TargetUserName|endswith: '$'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Legacy clients or appliances that only speak NTLM without session security
+level: medium

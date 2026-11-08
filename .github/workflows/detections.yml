@@ -1,0 +1,35 @@
+name: detections
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate Sigma rules
+        run: sigma check --fail-on-issues detections/
+
+      - name: Replay fixtures against rules
+        run: pytest -v
+
+      - name: Convert rules to Splunk SPL
+        run: |
+          mkdir -p build
+          sigma convert -t splunk --without-pipeline detections/ -o build/splunk.spl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: splunk-queries
+          path: build/

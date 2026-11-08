@@ -1,0 +1,36 @@
+title: Service Installed With Remote-Execution Style ImagePath
+id: 08ac7b55-656f-447d-bef0-609d30abba94
+status: experimental
+description: |
+  Detects new services (System 7045) whose ImagePath matches patterns left by
+  common remote execution tooling: a random 8-letter binary dropped directly in the
+  Windows directory, a command shell launched with output redirected to an admin share,
+  or a binary executed from ADMIN$.
+references:
+  - https://attack.mitre.org/techniques/T1569/002/
+  - https://attack.mitre.org/techniques/T1021/002/
+author: Kushal Mistry
+date: 2026-11-07
+tags:
+  - attack.execution
+  - attack.t1569.002
+  - attack.lateral-movement
+  - attack.t1021.002
+logsource:
+  product: windows
+  service: system
+detection:
+  selection_event:
+    EventID: 7045
+  selection_random_binary:
+    ImagePath|re: '(?i)^%systemroot%\\[a-z]{8}\.exe$'
+  selection_comspec_redirect:
+    ImagePath|contains|all:
+      - '%COMSPEC%'
+      - ' /Q /c '
+  selection_admin_share:
+    ImagePath|contains: '\ADMIN$\'
+  condition: selection_event and (selection_random_binary or selection_comspec_redirect or selection_admin_share)
+falsepositives:
+  - Software deployment tools that push installers over ADMIN$ (e.g. PsExec used by IT); baseline and filter by service name
+level: high

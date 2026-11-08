@@ -1,0 +1,1 @@
+{"Channel": "Security", "EventID": 4624, "Computer": "WS01.lab.local", "LogonType": "3", "AuthenticationPackageName": "NTLM", "LogonProcessName": "NtLmSsp ", "KeyLength": "0", "SubjectUserSid": "S-1-0-0", "TargetUserName": "administrator", "IpAddress": "10.10.10.99"}

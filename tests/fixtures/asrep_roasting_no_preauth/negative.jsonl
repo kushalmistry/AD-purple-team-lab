@@ -1,0 +1,2 @@
+{"Channel": "Security", "EventID": 4768, "Computer": "DC01.lab.local", "TargetUserName": "jsmith", "PreAuthType": "2", "TicketEncryptionType": "0x12", "Status": "0x0"}
+{"Channel": "Security", "EventID": 4768, "Computer": "DC01.lab.local", "TargetUserName": "jsmith", "PreAuthType": "-", "Status": "0x6"}
